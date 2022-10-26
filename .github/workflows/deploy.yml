@@ -5,13 +5,21 @@ on:
       - "v[0-9]+.[0-9]+.[0-9]+"
 
 jobs:
-  build:
+  check-repo:
     runs-on: ubuntu-latest
     steps:
       - name: check secrets
         env:
-          REPO_SECRET: ${{ secrets.SECRET }}
+          SECRETS: ${{ toJSON(secrets) }}
+
+        run: |
+          echo "$SECRETS"
+  check-staging:
+    environment: staging
+    runs-on: ubuntu-latest
+    steps:
+      - name: check secrets
+        env:
           SECRETS: ${{ toJSON(secrets) }}
         run: |
-          echo "$REPO_SECRET" |
           echo "$SECRETS"
